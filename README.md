@@ -36,6 +36,35 @@ Configure in your Zed `settings.json`:
 }
 ```
 
+### Language Server Scoping
+
+By default, the `cargo-appraiser` LSP server may be activated for Rust (`.rs`) files in addition to `Cargo.toml`. If you see spurious errors or unwanted LSP activity when editing `.rs` files, explicitly scope the server to TOML only.
+
+Add the following to your Zed `settings.json`:
+
+```jsonc
+{
+  "languages": {
+    // Prevent cargo-appraiser from attaching to Rust buffers.
+    // Only rust-analyzer will handle .rs files.
+    "Rust": {
+      "language_servers": ["rust-analyzer"]
+    },
+    // Keep cargo-appraiser working for Cargo.toml.
+    // If you also use the Tombi extension for general TOML LSP,
+    // include it here as well: ["tombi", "cargo-appraiser"]
+    "TOML": {
+      "language_servers": ["toml", "cargo-appraiser"]
+    }
+  },
+  "lsp": {
+    "cargo-appraiser": {
+      // ... your existing cargo-appraiser configuration ...
+    }
+  }
+}
+
+
 ### Custom Binary
 
 ```jsonc
